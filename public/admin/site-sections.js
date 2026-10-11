@@ -17,17 +17,6 @@
       .stat { padding: 10px }
       .panel { padding: 14px }
     }
-    .technologyStackRows { display: grid; gap: 9px }
-    .technologyStackRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px; border: 1px solid #293656; border-radius: 10px; background: #0b1229 }
-    .technologyStackRow input { min-width: 0 }
-    .technologyStackControls { display: flex; flex-wrap: wrap; gap: 5px }
-    .technologyStackControls .btn { min-width: 38px; padding: 8px 10px }
-    .technologyStackAdd { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 9px; margin-top: 12px }
-    @media (max-width: 480px) {
-      .technologyStackRow { grid-template-columns: minmax(0, 1fr) }
-      .technologyStackControls { justify-content: flex-end }
-      .technologyStackAdd { grid-template-columns: minmax(0, 1fr) }
-    }
   `
   document.head.appendChild(adminResponsiveStyle)
 
@@ -183,17 +172,37 @@
     panel.className = 'panel'
     panel.id = 'technologyStackSettings'
     panel.innerHTML = `
-      <div class="panelhead"><div><h2>Modern technology stack</h2><p class="muted">Manage the technologies shown above “Scroll to Explore” on the homepage.</p></div></div>
-      <p class="hint">Up to 8 technologies stay still. From the 9th onward, the list continuously moves right to left. New entries use a clean initials icon automatically.</p>
+      <div class="panelhead technologyStackPanelHead">
+        <div>
+          <span class="technologyStackEyebrow">HOMEPAGE CONTENT</span>
+          <h2>Modern technology stack</h2>
+          <p class="muted">Manage the technologies visitors see in the homepage showcase.</p>
+        </div>
+        <span class="technologyStackCount" aria-live="polite"></span>
+      </div>
+      <div class="technologyStackHelp">
+        <span class="technologyStackHelpIcon" aria-hidden="true">i</span>
+        <p>Up to 8 technologies appear as a still row. Add more to create a scrolling showcase. New entries get an initials icon automatically.</p>
+      </div>
+      <div class="technologyStackListHead"><span>DISPLAY ORDER</span><span>REORDER OR REMOVE</span></div>
       <div class="technologyStackRows" id="technologyStackRows"></div>
-      <div class="technologyStackAdd"><input id="technologyStackNewName" maxlength="48" aria-label="New technology name" placeholder="Add a technology, e.g. PostgreSQL"><button class="btn" id="technologyStackAdd" type="button">＋ Add</button></div>
-      <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn primary" id="technologyStackSave" type="button">Save &amp; publish</button></div>
-      <p class="hint">Published changes appear on the live site when visitors load or refresh the homepage.</p>
+      <div class="technologyStackAdd">
+        <label class="technologyStackNewField" for="technologyStackNewName">
+          <span>Add a technology</span>
+          <input id="technologyStackNewName" maxlength="48" aria-label="New technology name" placeholder="e.g. PostgreSQL">
+        </label>
+        <button class="btn technologyStackAddButton" id="technologyStackAdd" type="button"><span aria-hidden="true">＋</span> Add technology</button>
+      </div>
+      <div class="technologyStackPublish">
+        <span>Changes stay in draft until you publish.</span>
+        <button class="btn primary" id="technologyStackSave" type="button">Save &amp; publish</button>
+      </div>
       <p class="status" id="technologyStackStatus" role="status" aria-live="polite"></p>`
     settings.appendChild(panel)
 
     const rows = panel.querySelector('#technologyStackRows')
     const status = panel.querySelector('#technologyStackStatus')
+    const count = panel.querySelector('.technologyStackCount')
     const updateStatus = (message, isError = false) => {
       status.textContent = message
       status.className = isError ? 'status error' : 'status'
@@ -201,13 +210,18 @@
     const render = () => {
       rows.innerHTML = technologies.map((name, index) => `
         <div class="technologyStackRow">
-          <input data-tech-name="${index}" aria-label="Technology ${index + 1}" maxlength="48" value="${escapeHtml(name)}">
+          <span class="technologyStackOrder" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
+          <label class="technologyStackName">
+            <span>Technology ${index + 1}</span>
+            <input data-tech-name="${index}" aria-label="Technology ${index + 1}" maxlength="48" value="${escapeHtml(name)}">
+          </label>
           <div class="technologyStackControls">
-            <button class="btn" type="button" data-tech-move="${index}" data-direction="-1" aria-label="Move ${escapeHtml(name)} up" ${index === 0 ? 'disabled' : ''}>↑</button>
-            <button class="btn" type="button" data-tech-move="${index}" data-direction="1" aria-label="Move ${escapeHtml(name)} down" ${index === technologies.length - 1 ? 'disabled' : ''}>↓</button>
+            <button class="btn technologyStackMove" type="button" data-tech-move="${index}" data-direction="-1" aria-label="Move ${escapeHtml(name)} up" title="Move up" ${index === 0 ? 'disabled' : ''}>↑</button>
+            <button class="btn technologyStackMove" type="button" data-tech-move="${index}" data-direction="1" aria-label="Move ${escapeHtml(name)} down" title="Move down" ${index === technologies.length - 1 ? 'disabled' : ''}>↓</button>
             <button class="btn danger" type="button" data-tech-remove="${index}" aria-label="Remove ${escapeHtml(name)}">Remove</button>
           </div>
         </div>`).join('')
+      count.textContent = `${technologies.length} ${technologies.length === 1 ? 'technology' : 'technologies'}`
       rows.querySelectorAll('[data-tech-name]').forEach((input) => {
         input.addEventListener('input', () => {
           technologies[Number(input.dataset.techName)] = input.value

@@ -579,6 +579,317 @@ select option {
   box-shadow: 0 5px 16px rgb(24 47 88 / 5%);
 }
 
+#technologyStackSettings {
+  padding: 22px;
+  border-radius: 16px;
+}
+
+#technologyStackSettings .technologyStackPanelHead {
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+#technologyStackSettings .technologyStackPanelHead h2 {
+  margin-top: 5px;
+  font-size: 19px;
+  letter-spacing: -.3px;
+}
+
+#technologyStackSettings .technologyStackPanelHead p {
+  margin: 6px 0 0;
+  font-size: 13px;
+}
+
+.technologyStackEyebrow {
+  color: #526da8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .11em;
+}
+
+.technologyStackCount {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid #dce6f5;
+  border-radius: 999px;
+  background: #f3f7ff;
+  color: #315db7;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.technologyStackHelp {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border: 1px solid #dfe8f6;
+  border-radius: 11px;
+  background: #f7f9fd;
+}
+
+.technologyStackHelpIcon {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7efff;
+  color: #315db7;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.technologyStackHelp p {
+  margin: 1px 0 0;
+  color: #52617b;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.technologyStackListHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 2px 7px;
+  color: #8290a6;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.technologyStackRows {
+  display: grid;
+  gap: 8px;
+}
+
+.technologyStackRow {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid #e0e7f1;
+  border-radius: 11px;
+  background: #fff;
+  transition: border-color .16s ease, background-color .16s ease;
+}
+
+.technologyStackRow:hover {
+  border-color: #b9cbed;
+  background: #fbfcff;
+}
+
+.technologyStackOrder {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid #dce6f5;
+  border-radius: 9px;
+  background: #f3f7ff;
+  color: #48679d;
+  font-size: 10px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.technologyStackName {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  color: #687894;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.technologyStackName input {
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid #d6dfec !important;
+  border-radius: 8px;
+  background: #fff !important;
+  color: #172543 !important;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.technologyStackName input:hover {
+  border-color: #9eb5df !important;
+}
+
+.technologyStackName input:focus-visible {
+  border-color: #6588e8 !important;
+  outline: 3px solid rgb(101 136 232 / 18%);
+  outline-offset: 1px;
+}
+
+.technologyStackControls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.technologyStackControls .technologyStackMove {
+  display: grid;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  border-radius: 8px;
+  color: #315db7 !important;
+  font-size: 14px;
+}
+
+.technologyStackControls .technologyStackMove:disabled {
+  cursor: not-allowed;
+  opacity: .4;
+}
+
+.technologyStackControls .btn.danger {
+  min-height: 34px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+.technologyStackAdd {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 15px;
+  border-top: 1px solid #e7edf5;
+}
+
+.technologyStackNewField {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  color: #52617b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.technologyStackNewField input {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 11px;
+  border: 1px solid #d6dfec !important;
+  border-radius: 9px;
+  background: #fff !important;
+  color: #172543 !important;
+  font-size: 13px;
+}
+
+.technologyStackAddButton {
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.technologyStackPublish {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #e7edf5;
+}
+
+.technologyStackPublish > span {
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.technologyStackPublish .btn {
+  min-height: 40px;
+  padding: 10px 16px;
+}
+
+#technologyStackStatus {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  #technologyStackSettings {
+    padding: 16px;
+  }
+
+  .technologyStackRow {
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .technologyStackOrder {
+    width: 28px;
+    height: 28px;
+  }
+
+  .technologyStackControls {
+    gap: 4px;
+  }
+
+  .technologyStackControls .technologyStackMove {
+    width: 32px;
+    min-width: 32px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 520px) {
+  #technologyStackSettings .technologyStackPanelHead {
+    align-items: flex-start;
+  }
+
+  .technologyStackCount {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .technologyStackListHead span:last-child {
+    display: none;
+  }
+
+  .technologyStackRow {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .technologyStackControls {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+
+  .technologyStackAdd {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .technologyStackAddButton {
+    justify-content: center;
+  }
+
+  .technologyStackPublish {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .technologyStackPublish .btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
 #enquiries #leadList > .lead > * {
   min-width: 0;
   overflow-wrap: anywhere;
