@@ -17,6 +17,17 @@
       .stat { padding: 10px }
       .panel { padding: 14px }
     }
+    .technologyStackRows { display: grid; gap: 9px }
+    .technologyStackRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px; border: 1px solid #293656; border-radius: 10px; background: #0b1229 }
+    .technologyStackRow input { min-width: 0 }
+    .technologyStackControls { display: flex; flex-wrap: wrap; gap: 5px }
+    .technologyStackControls .btn { min-width: 38px; padding: 8px 10px }
+    .technologyStackAdd { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 9px; margin-top: 12px }
+    @media (max-width: 480px) {
+      .technologyStackRow { grid-template-columns: minmax(0, 1fr) }
+      .technologyStackControls { justify-content: flex-end }
+      .technologyStackAdd { grid-template-columns: minmax(0, 1fr) }
+    }
   `
   document.head.appendChild(adminResponsiveStyle)
 
@@ -159,6 +170,154 @@
     return String(value ?? '').replace(/[&<>"']/g, (character) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
     })[character])
+  }
+
+  function installTechnologySettingsEditor() {
+    const settings = document.getElementById('settings')
+    if (!settings || settings.querySelector('#technologyStackSettings')) return
+
+    const defaultTechnologies = ['React', 'Next.js', 'Node.js', 'Python', 'AWS', 'Azure', 'MongoDB', 'Docker']
+    let technologies = [...defaultTechnologies]
+    let loaded = false
+    const panel = document.createElement('div')
+    panel.className = 'panel'
+    panel.id = 'technologyStackSettings'
+    panel.innerHTML = `
+      <div class="panelhead"><div><h2>Modern technology stack</h2><p class="muted">Manage the technologies shown above “Scroll to Explore” on the homepage.</p></div></div>
+      <p class="hint">Up to 8 technologies stay still. From the 9th onward, the list continuously moves right to left. New entries use a clean initials icon automatically.</p>
+      <div class="technologyStackRows" id="technologyStackRows"></div>
+      <div class="technologyStackAdd"><input id="technologyStackNewName" maxlength="48" aria-label="New technology name" placeholder="Add a technology, e.g. PostgreSQL"><button class="btn" id="technologyStackAdd" type="button">＋ Add</button></div>
+      <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn primary" id="technologyStackSave" type="button">Save &amp; publish</button></div>
+      <p class="hint">Published changes appear on the live site when visitors load or refresh the homepage.</p>
+      <p class="status" id="technologyStackStatus" role="status" aria-live="polite"></p>`
+    settings.appendChild(panel)
+
+    const rows = panel.querySelector('#technologyStackRows')
+    const status = panel.querySelector('#technologyStackStatus')
+    const updateStatus = (message, isError = false) => {
+      status.textContent = message
+      status.className = isError ? 'status error' : 'status'
+    }
+    const render = () => {
+      rows.innerHTML = technologies.map((name, index) => `
+        <div class="technologyStackRow">
+          <input data-tech-name="${index}" aria-label="Technology ${index + 1}" maxlength="48" value="${escapeHtml(name)}">
+          <div class="technologyStackControls">
+            <button class="btn" type="button" data-tech-move="${index}" data-direction="-1" aria-label="Move ${escapeHtml(name)} up" ${index === 0 ? 'disabled' : ''}>↑</button>
+            <button class="btn" type="button" data-tech-move="${index}" data-direction="1" aria-label="Move ${escapeHtml(name)} down" ${index === technologies.length - 1 ? 'disabled' : ''}>↓</button>
+            <button class="btn danger" type="button" data-tech-remove="${index}" aria-label="Remove ${escapeHtml(name)}">Remove</button>
+          </div>
+        </div>`).join('')
+      rows.querySelectorAll('[data-tech-name]').forEach((input) => {
+        input.addEventListener('input', () => {
+          technologies[Number(input.dataset.techName)] = input.value
+          updateStatus('Unsaved changes. Save and publish to update the homepage.')
+        })
+      })
+      rows.querySelectorAll('[data-tech-remove]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (technologies.length <= 1) {
+            updateStatus('Keep at least one technology in the list.', true)
+            return
+          }
+          technologies.splice(Number(button.dataset.techRemove), 1)
+          render()
+          updateStatus('Unsaved changes. Save and publish to update the homepage.')
+        })
+      })
+      rows.querySelectorAll('[data-tech-move]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const index = Number(button.dataset.techMove)
+          const nextIndex = index + Number(button.dataset.direction)
+          if (nextIndex < 0 || nextIndex >= technologies.length) return
+          ;[technologies[index], technologies[nextIndex]] = [technologies[nextIndex], technologies[index]]
+          render()
+          rows.querySelector(`[data-tech-name="${nextIndex}"]`)?.focus()
+          updateStatus('Unsaved changes. Save and publish to update the homepage.')
+        })
+      })
+    }
+
+    async function load() {
+      if (loaded) return
+      updateStatus('Loading technology settings…')
+      try {
+        const { items = [] } = await request('/admin/content')
+        const saved = items.find((item) => item.content_key === 'technology_stack')
+        const configured = saved?.content?.items || saved?.published_content?.items
+        technologies = Array.isArray(configured)
+          ? configured.filter((name) => typeof name === 'string').map((name) => name.trim()).filter(Boolean)
+          : [...defaultTechnologies]
+        if (!technologies.length) technologies = [...defaultTechnologies]
+        render()
+        loaded = true
+        updateStatus(`${technologies.length} technologies loaded. Changes are not live until published.`)
+      } catch (error) {
+        updateStatus(`Could not load technology settings: ${error.message}`, true)
+      }
+    }
+
+    panel.querySelector('#technologyStackAdd').addEventListener('click', () => {
+      const input = panel.querySelector('#technologyStackNewName')
+      const name = input.value.trim()
+      if (!name) {
+        input.focus()
+        updateStatus('Enter a technology name before adding it.', true)
+        return
+      }
+      if (technologies.some((item) => item.toLocaleLowerCase() === name.toLocaleLowerCase())) {
+        input.focus()
+        updateStatus('That technology is already in the list.', true)
+        return
+      }
+      technologies.push(name)
+      input.value = ''
+      render()
+      rows.querySelector(`[data-tech-name="${technologies.length - 1}"]`)?.focus()
+      updateStatus('Unsaved changes. Save and publish to update the homepage.')
+    })
+    panel.querySelector('#technologyStackNewName').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        panel.querySelector('#technologyStackAdd').click()
+      }
+    })
+    panel.querySelector('#technologyStackSave').addEventListener('click', async (event) => {
+      const button = event.currentTarget
+      const names = technologies.map((name) => name.trim()).filter(Boolean)
+      const uniqueNames = new Set(names.map((name) => name.toLocaleLowerCase()))
+      if (!names.length) {
+        updateStatus('Keep at least one technology in the list.', true)
+        return
+      }
+      if (uniqueNames.size !== names.length) {
+        updateStatus('Remove duplicate technology names before publishing.', true)
+        return
+      }
+      button.disabled = true
+      try {
+        updateStatus('Saving and publishing technology settings…')
+        await request('/admin/content', {
+          method: 'PUT',
+          body: JSON.stringify({ key: 'technology_stack', content: { items: names } }),
+        })
+        await request('/admin/content', {
+          method: 'POST',
+          body: JSON.stringify({ key: 'technology_stack' }),
+        })
+        technologies = names
+        render()
+        updateStatus(`Published ${names.length} technologies. The homepage updates on the next page load.`)
+      } catch (error) {
+        updateStatus(`Could not publish technology settings: ${error.message}`, true)
+      } finally {
+        button.disabled = false
+      }
+    })
+
+    document.querySelectorAll('[data-view="settings"], [data-go="settings"]').forEach((button) => {
+      button.addEventListener('click', () => { load() })
+    })
   }
 
   async function loadTestimonials() {
@@ -668,6 +827,7 @@
     refreshSavedState()
   }
 
+  installTechnologySettingsEditor()
   installRepeatableContentEditors()
   setupContentWorkflow()
 

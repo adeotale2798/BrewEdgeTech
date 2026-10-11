@@ -1,11 +1,21 @@
 (() => {
   function applySettings(content = {}) {
     const footer = content.footer || {}
-    const set = (selector, value) => {
-      if (typeof value !== 'string' || !value.trim()) return
-      document.querySelectorAll(selector).forEach((element) => {
-        element.textContent = value.trim()
-      })
+    const footerTagline = document.querySelector('footer .footbrand > p')
+    if (footerTagline) {
+      footerTagline.className = 'footerTagline'
+      footerTagline.replaceChildren(
+        ...['IDEAS', 'BUILD', 'EVOLVE'].flatMap((word, index) => {
+          const label = document.createElement('span')
+          label.textContent = word
+          if (index === 0) return [label]
+          const divider = document.createElement('span')
+          divider.className = 'footerTaglineDivider'
+          divider.setAttribute('aria-hidden', 'true')
+          divider.textContent = '|'
+          return [divider, label]
+        }),
+      )
     }
 
     if (typeof footer.company === 'string' && footer.company.trim()) {
@@ -38,6 +48,7 @@
 
     const contactDetails = document.querySelector('footer .footcol:last-child p')
     if (contactDetails) {
+      contactDetails.className = 'footerContactDetails'
       const lines = [footer.phone, footer.location]
         .filter((value) => typeof value === 'string' && value.trim())
         .map((value) => {
@@ -61,22 +72,42 @@
     if (contact) {
       let socialLinks = contact.querySelector('.site-social-links')
       const socials = [
-        ['Instagram', footer.instagram],
-        ['LinkedIn', footer.linkedin],
-      ].filter(([, url]) => typeof url === 'string' && /^https:\/\//i.test(url.trim()))
+        {
+          label: 'Instagram',
+          url: footer.instagram,
+          markup: '<rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="18" cy="6" r="1" fill="currentColor" stroke="none"></circle>',
+        },
+        {
+          label: 'YouTube',
+          url: footer.youtube,
+          markup: '<path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"></path>',
+        },
+        {
+          label: 'LinkedIn',
+          url: footer.linkedin,
+          markup: '<path d="M5.2 8.4H1.4V22h3.8V8.4ZM3.3 2a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4ZM22 14.2c0-4.1-2.2-6-5.1-6a4.4 4.4 0 0 0-3.9 2.1V8.4H9.2V22H13v-6.7c0-1.8.3-3.5 2.5-3.5s2.2 2 2.2 3.6V22h3.8l.5-7.8Z"></path>',
+        },
+      ].filter((social) => typeof social.url === 'string' && /^https:\/\//i.test(social.url.trim()))
       if (socials.length) {
         if (!socialLinks) {
           socialLinks = document.createElement('div')
           socialLinks.className = 'site-social-links'
-          socialLinks.style.cssText = 'display:flex;gap:14px;margin-top:12px'
+          socialLinks.setAttribute('aria-label', 'Social media')
           contact.appendChild(socialLinks)
         }
-        socialLinks.replaceChildren(...socials.map(([label, url]) => {
+        socialLinks.replaceChildren(...socials.map(({ label, url, markup }) => {
           const link = document.createElement('a')
           link.href = url.trim()
           link.target = '_blank'
           link.rel = 'noopener noreferrer'
-          link.textContent = label
+          link.setAttribute('aria-label', label)
+          link.title = label
+          const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+          icon.setAttribute('viewBox', '0 0 24 24')
+          icon.setAttribute('aria-hidden', 'true')
+          icon.setAttribute('focusable', 'false')
+          icon.innerHTML = markup
+          link.appendChild(icon)
           return link
         }))
       } else {
