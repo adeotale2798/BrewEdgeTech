@@ -34,16 +34,20 @@ test('seeds missing built-in records and is repeat-safe', async () => {
   const db = createDb()
 
   const first = await seedBuiltInData(db)
-  assert.deepEqual(first.inserted, { site_content: 8, versions: 3 })
+  assert.deepEqual(first.inserted, { site_content: 9, versions: 3 })
   assert.deepEqual(first.preserved, { site_content: 0, versions: 0 })
   assert.equal(db.collections.get('site_content').get('demo_library').content.items.length, 3)
   assert.equal(db.collections.get('site_content').get('services').content.items.length, 4)
   assert.equal(db.collections.get('site_content').get('pricing').content.items.length, 3)
   assert.equal(db.collections.get('site_content').get('faq').content.items.length, 4)
+  assert.deepEqual(
+    db.collections.get('site_content').get('technology_stack').content.items,
+    ['React', 'Next.js', 'Node.js', 'Python', 'AWS', 'Azure', 'MongoDB', 'Docker'],
+  )
 
   const second = await seedBuiltInData(db)
   assert.deepEqual(second.inserted, { site_content: 0, versions: 0 })
-  assert.deepEqual(second.preserved, { site_content: 8, versions: 3 })
+  assert.deepEqual(second.preserved, { site_content: 9, versions: 3 })
 })
 
 test('does not replace existing content when adding other defaults', async () => {
@@ -58,7 +62,7 @@ test('does not replace existing content when adding other defaults', async () =>
 
   assert.equal(result.preserved.site_content, 1)
   assert.deepEqual(db.collections.get('site_content').get('demo_library'), existingContent)
-  assert.equal(db.collections.get('site_content').size, 8)
+  assert.equal(db.collections.get('site_content').size, 9)
 })
 
 test('builds an Atlas seed-list URI from validated environment settings', () => {

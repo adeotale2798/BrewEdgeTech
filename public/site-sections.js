@@ -15,17 +15,288 @@
 
   const hero = document.getElementById('home')
   const ticker = document.querySelector('.ticker')
+  const main = document.getElementById('main-content')
   const mobileExperience = document.getElementById('mobile-experience')
   const valueBand = document.querySelector('.valueBand')
+  const menu = document.getElementById('menu')
+  if (menu) menu.setAttribute('aria-controls', 'links')
 
   const navCta = document.querySelector('.navCta')
   if (navCta) {
     const arrow = navCta.querySelector('span')
-    navCta.replaceChildren(document.createTextNode('Discuss a Project '))
+    navCta.replaceChildren(document.createTextNode('Tell us about your project '))
     if (arrow) navCta.appendChild(arrow)
   }
   const heroEyebrow = hero?.querySelector('.eyebrow')
   if (heroEyebrow) heroEyebrow.textContent = '✧  DIGITAL EXPERIENCES, MADE FOR WHAT’S NEXT'
+
+  const dashboard = document.querySelector('.heroVisual .screen')
+  if (dashboard) {
+    const heroVisual = dashboard.parentElement
+    const progressCard = heroVisual.querySelector('.progressFloat')
+    heroVisual.querySelector('.float.f2')?.remove()
+    dashboard.classList.add('dashboardScreen')
+    dashboard.setAttribute('aria-label', 'Illustrative business dashboard with simulated sample metrics')
+    dashboard.innerHTML = `
+      <div class="workspaceSidebar">
+        <span class="workspaceBrand"><i aria-hidden="true"></i> BREW EDGE TECH</span>
+        <span class="workspaceSideLabel">WORKSPACE</span>
+        <span class="workspaceNav active"><i aria-hidden="true">▦</i> Dashboard</span>
+        <span class="workspaceNav"><i aria-hidden="true">▣</i> Web Apps</span>
+        <span class="workspaceNav"><i aria-hidden="true">▤</i> Mobile Apps</span>
+        <span class="workspaceNav"><i aria-hidden="true">◇</i> UI/UX Design</span>
+        <span class="workspaceNav"><i aria-hidden="true">☁</i> Cloud &amp; DevOps</span>
+        <span class="workspaceNav"><i aria-hidden="true">✧</i> AI Automation</span>
+        <span class="workspaceNav"><i aria-hidden="true">↗</i> Support</span>
+      </div>
+      <div class="workspaceMain">
+        <div class="dashboardTopline">
+          <span class="dashboardBrand"><i aria-hidden="true"></i> Brew EdgeTech · Workspace</span>
+          <span class="dashboardSample">ILLUSTRATIVE · SAMPLE DATA</span>
+        </div>
+        <div class="dashboardHeading"><div><small>TURNING IDEAS</small><strong>Into impact</strong></div><span class="dashboardPeriod">Last 30 days <i aria-hidden="true">⌄</i></span></div>
+        <div class="dashboardMetrics" aria-live="off">
+          <article class="dashboardMetric"><span>Projects delivered</span><strong data-metric="projects">24</strong><small><i aria-hidden="true">↗</i> <b data-metric="delivery">+8%</b></small></article>
+          <article class="dashboardMetric"><span>Client growth</span><strong data-metric="clients">18%</strong><small><i aria-hidden="true">↗</i> <b data-metric="growth">+12%</b></small></article>
+          <article class="dashboardMetric"><span>User engagement</span><strong data-metric="engagement">2.4M</strong><small><i aria-hidden="true">↗</i> <b data-metric="engagementChange">+16%</b></small></article>
+        </div>
+        <div class="workspaceActionTiles" aria-label="Illustrative workspace activity">
+          <div class="workspaceActionTile"><span class="workspaceActionIcon" aria-hidden="true">↗</span><span><small>ACTIVE BUILD</small><b>Web experience</b></span><strong>78%</strong></div>
+          <div class="workspaceActionTile"><span class="workspaceActionIcon workspaceActionIconAi" aria-hidden="true">✦</span><span><small>SMART WORKFLOW</small><b>Automation flow</b></span><strong class="workspaceLive"><i></i> LIVE</strong></div>
+        </div>
+        <div class="dashboardChartHeading"><strong>Illustrative activity</strong><span>SIMULATED · LIVE PREVIEW</span></div>
+        <div class="dashboardChart" aria-hidden="true">
+          <div class="dashboardChartGrid"><i></i><i></i><i></i><i></i></div>
+          <svg class="dashboardLineChart" viewBox="0 0 320 112" preserveAspectRatio="none">
+            <defs><linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2584ff" stop-opacity=".2"/><stop offset="100%" stop-color="#2584ff" stop-opacity="0"/></linearGradient></defs>
+            <path class="dashboardArea" data-series="area"></path>
+            <path class="dashboardLineGuide dashboardLineGuidePrimary" data-series="primary-guide"></path>
+            <path class="dashboardLineGuide dashboardLineGuideSecondary" data-series="secondary-guide"></path>
+            <path class="dashboardLine dashboardLinePrimary" pathLength="1" data-series="primary"></path>
+            <path class="dashboardLine dashboardLineSecondary" pathLength="1" data-series="secondary"></path>
+            <circle class="dashboardLineDot dashboardLineDotPrimary" r="3.5"><animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#dashboardPrimaryLine"></mpath></animateMotion></circle>
+            <circle class="dashboardLineDot dashboardLineDotSecondary" r="3"><animateMotion dur="6s" repeatCount="indefinite" rotate="auto"><mpath href="#dashboardSecondaryLine"></mpath></animateMotion></circle>
+          </svg>
+          <div class="dashboardChartBars"><i style="--bar:31%"></i><i style="--bar:43%"></i><i style="--bar:37%"></i><i style="--bar:57%"></i><i style="--bar:48%"></i><i style="--bar:72%"></i><i style="--bar:62%"></i><i style="--bar:84%"></i><i style="--bar:75%"></i><i style="--bar:96%"></i><i style="--bar:86%"></i><i style="--bar:100%"></i></div>
+            <span class="dashboardChartSweep"></span>
+          </div>
+          <div class="dashboardMonths" aria-hidden="true"><span>JAN</span><span>MAR</span><span>MAY</span><span>JUL</span><span>SEP</span><span>NOV</span></div>
+        <div class="workspaceSignalRow"><span><i aria-hidden="true">✓</i> Design review approved</span><b>JUST NOW</b></div>
+      </div>`
+
+    const primaryLine = dashboard.querySelector('.dashboardLinePrimary')
+    const secondaryLine = dashboard.querySelector('.dashboardLineSecondary')
+    const primaryGuide = dashboard.querySelector('.dashboardLineGuidePrimary')
+    const secondaryGuide = dashboard.querySelector('.dashboardLineGuideSecondary')
+    const area = dashboard.querySelector('.dashboardArea')
+    if (primaryLine && secondaryLine && primaryGuide && secondaryGuide && area) {
+      primaryLine.id = 'dashboardPrimaryLine'
+      secondaryLine.id = 'dashboardSecondaryLine'
+      const chartFrames = [
+        { primary: [102, 94, 86, 88, 72, 76, 61, 65, 47, 49, 28, 12], secondary: [108, 101, 95, 84, 87, 71, 75, 57, 60, 41, 38, 21] },
+        { primary: [104, 96, 90, 78, 82, 66, 69, 52, 56, 36, 40, 15], secondary: [106, 99, 88, 91, 76, 79, 62, 66, 48, 50, 31, 18] },
+        { primary: [100, 93, 96, 80, 83, 68, 72, 54, 57, 39, 33, 10], secondary: [109, 102, 91, 94, 78, 72, 76, 59, 62, 44, 35, 20] },
+      ]
+      const chartPath = (values) => {
+        const points = values.map((y, index) => ({
+          x: index * (320 / (values.length - 1)),
+          y,
+        }))
+        let path = `M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`
+        for (let index = 0; index < points.length - 1; index += 1) {
+          const previous = points[Math.max(0, index - 1)]
+          const current = points[index]
+          const next = points[index + 1]
+          const following = points[Math.min(points.length - 1, index + 2)]
+          const controlOneX = current.x + (next.x - previous.x) / 6
+          const controlOneY = current.y + (next.y - previous.y) / 6
+          const controlTwoX = next.x - (following.x - current.x) / 6
+          const controlTwoY = next.y - (following.y - current.y) / 6
+          path += ` C${controlOneX.toFixed(1)} ${controlOneY.toFixed(1)} ${controlTwoX.toFixed(1)} ${controlTwoY.toFixed(1)} ${next.x.toFixed(1)} ${next.y.toFixed(1)}`
+        }
+        return path
+      }
+      const setChart = (primary, secondary) => {
+        const primaryPath = chartPath(primary)
+        const secondaryPath = chartPath(secondary)
+        primaryLine.setAttribute('d', primaryPath)
+        secondaryLine.setAttribute('d', secondaryPath)
+        primaryGuide.setAttribute('d', primaryPath)
+        secondaryGuide.setAttribute('d', secondaryPath)
+        area.setAttribute('d', `${primaryPath} L320 112 L0 112 Z`)
+      }
+      let currentChart = {
+        primary: [...chartFrames[0].primary],
+        secondary: [...chartFrames[0].secondary],
+      }
+      setChart(currentChart.primary, currentChart.secondary)
+
+      const animateChart = (target) => {
+        const startedAt = performance.now()
+        const initial = {
+          primary: [...currentChart.primary],
+          secondary: [...currentChart.secondary],
+        }
+        const duration = 1050
+        const step = (now) => {
+          const linear = Math.min(1, (now - startedAt) / duration)
+          const progress = 1 - (1 - linear) ** 3
+          currentChart = {
+            primary: initial.primary.map((value, index) => value + (target.primary[index] - value) * progress),
+            secondary: initial.secondary.map((value, index) => value + (target.secondary[index] - value) * progress),
+          }
+          setChart(currentChart.primary, currentChart.secondary)
+          if (linear < 1) requestAnimationFrame(step)
+        }
+        requestAnimationFrame(step)
+      }
+
+      const metricValues = [
+        { projects: '24', delivery: '+8%', clients: '18%', growth: '+12%', engagement: '2.4M', engagementChange: '+16%' },
+        { projects: '26', delivery: '+11%', clients: '21%', growth: '+15%', engagement: '2.6M', engagementChange: '+19%' },
+        { projects: '25', delivery: '+9%', clients: '19%', growth: '+13%', engagement: '2.5M', engagementChange: '+17%' },
+      ]
+      let frameIndex = 0
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+      const updateDashboard = () => {
+        if (document.hidden || reducedMotion.matches) return
+        frameIndex = (frameIndex + 1) % metricValues.length
+        dashboard.classList.add('dashboardTick')
+        for (const [name, value] of Object.entries(metricValues[frameIndex])) {
+          dashboard.querySelectorAll(`[data-metric="${name}"]`).forEach((metric) => {
+            metric.textContent = value
+          })
+        }
+        animateChart(chartFrames[frameIndex])
+        dashboard.querySelectorAll('.dashboardChartBars i').forEach((bar, index) => {
+          const value = chartFrames[frameIndex].primary[index] || 0
+          bar.style.setProperty('--bar', `${100 - value}%`)
+        })
+        window.setTimeout(() => dashboard.classList.remove('dashboardTick'), 500)
+      }
+      window.setInterval(updateDashboard, 2400)
+    }
+    if (progressCard) dashboard.after(progressCard)
+
+    const featureCards = document.createElement('div')
+    featureCards.className = 'heroFeatureCards'
+    featureCards.setAttribute('aria-label', 'What Brew EdgeTech creates')
+    featureCards.innerHTML = `
+      <a class="heroFeatureCard heroFeaturePurpose" href="#about">
+        <span class="heroFeatureIcon heroFeaturePurposeIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3a9 9 0 0 0-5.7 16v3h11.4v-3A9 9 0 0 0 16 3Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 26h8m-6 3h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m16 7 1.2 3.2 3.3 1.2-3.3 1.2L16 16l-1.2-3.4-3.3-1.2 3.3-1.2z" fill="currentColor"/></svg></span>
+        <span class="heroFeatureCopy"><small>BUILT WITH PURPOSE</small><strong>Ideas into impact</strong></span><span class="heroFeatureArrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="heroFeatureCard heroFeatureWeb" href="#services">
+        <span class="heroFeatureIcon heroFeatureWebIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 7.5A2.5 2.5 0 0 1 7.5 5h17A2.5 2.5 0 0 1 27 7.5v12a2.5 2.5 0 0 1-2.5 2.5h-17A2.5 2.5 0 0 1 5 19.5z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 11h22M11 27h10m-5-5v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m12 16 3 3 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="heroFeatureCopy"><small>MADE FOR YOUR NEXT MOVE</small><strong>Web applications</strong><span class="heroFeaturePeople"><i>A</i><i>B</i><i>C</i><b>+</b></span></span><span class="heroFeatureArrow" aria-hidden="true">→</span>
+      </a>
+      <a class="heroFeatureCard heroFeatureMobile" href="#mobile-experience">
+        <span class="heroFeatureIcon heroFeatureMobileIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="8" y="3" width="16" height="26" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M13 7h6m-4 18h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m16 12 3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="heroFeatureCopy"><small>EVERY SCREEN, ONE EXPERIENCE</small><strong>Mobile experiences</strong><span class="heroFeaturePlatforms"><i aria-hidden="true">●</i><b>iOS</b><i aria-hidden="true">◆</i><b>Android</b></span></span><span class="heroFeatureArrow" aria-hidden="true">→</span>
+      </a>`
+    dashboard.after(featureCards)
+  }
+
+  const defaultTechnologies = ['React', 'Next.js', 'Node.js', 'Python', 'AWS', 'Azure', 'MongoDB', 'Docker']
+  const technologyIcons = {
+    react: 'react.svg',
+    'next.js': 'nextjs.svg',
+    'node.js': 'nodejs.svg',
+    python: 'python.svg',
+    aws: 'aws.svg',
+    azure: 'azure.svg',
+    mongodb: 'mongodb.svg',
+    docker: 'docker.svg',
+  }
+  const heroTechStack = document.createElement('section')
+  heroTechStack.className = 'heroTechStack'
+  heroTechStack.setAttribute('aria-label', 'Technologies we work with')
+  heroTechStack.innerHTML = `
+    <strong>WE WORK WITH<br>MODERN TECHNOLOGIES</strong>
+    <div class="techStackViewport" role="group" aria-label="Technology list">
+      <div class="techStackTrack"><div class="techStackGroup" role="list"></div></div>
+    </div>`
+
+  const techTrack = heroTechStack.querySelector('.techStackTrack')
+  const techViewport = heroTechStack.querySelector('.techStackViewport')
+  let currentTechnologies = [...defaultTechnologies]
+  const reducedMotionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  function renderTechnologyStack(input) {
+    const seen = new Set()
+    const technologies = (Array.isArray(input) ? input : [])
+      .filter((name) => typeof name === 'string')
+      .map((name) => name.trim().slice(0, 48))
+      .filter((name) => {
+        const key = name.toLocaleLowerCase()
+        if (!key || seen.has(key)) return false
+        seen.add(key)
+        return true
+      })
+    currentTechnologies = technologies.length ? technologies : [...defaultTechnologies]
+    const shouldScroll = currentTechnologies.length > 0 && !reducedMotionPreference.matches
+    heroTechStack.classList.add('has-overflow')
+    heroTechStack.classList.toggle('is-scrolling', shouldScroll)
+    techTrack.replaceChildren()
+
+    const createGroup = () => {
+      const group = document.createElement('div')
+      group.className = 'techStackGroup'
+      group.setAttribute('role', 'list')
+      currentTechnologies.forEach((name) => {
+        const item = document.createElement('span')
+        item.className = 'techStackItem'
+        item.setAttribute('role', 'listitem')
+        const icon = technologyIcons[name.toLocaleLowerCase()]
+        if (icon) {
+          const image = document.createElement('img')
+          image.src = `/tech-logos/${icon}`
+          image.alt = ''
+          image.setAttribute('aria-hidden', 'true')
+          item.appendChild(image)
+        } else {
+          const glyph = document.createElement('span')
+          glyph.className = 'techStackGlyph'
+          glyph.setAttribute('aria-hidden', 'true')
+          glyph.textContent = name.slice(0, 2).toUpperCase()
+          item.appendChild(glyph)
+        }
+        const label = document.createElement('span')
+        label.textContent = name
+        item.appendChild(label)
+        group.appendChild(item)
+      })
+      return group
+    }
+
+    const firstGroup = createGroup()
+    techTrack.appendChild(firstGroup)
+    if (shouldScroll) {
+      const groupWidth = firstGroup.getBoundingClientRect().width
+      const viewportWidth = techViewport.clientWidth
+      const groupCount = Math.max(2, Math.ceil(viewportWidth / groupWidth) + 1)
+      for (let index = 1; index < groupCount; index += 1) {
+        const repeatedGroup = createGroup()
+        repeatedGroup.setAttribute('aria-hidden', 'true')
+        techTrack.appendChild(repeatedGroup)
+      }
+      heroTechStack.style.setProperty('--tech-loop-distance', `${groupWidth}px`)
+      heroTechStack.style.setProperty('--tech-scroll-duration', `${Math.max(12, groupWidth / 36)}s`)
+    }
+  }
+
+  hero?.querySelector('.heroScrollCue')?.before(heroTechStack)
+  renderTechnologyStack(defaultTechnologies)
+  reducedMotionPreference.addEventListener?.('change', () => renderTechnologyStack(currentTechnologies))
+  if (typeof ResizeObserver === 'function') {
+    const technologyStackObserver = new ResizeObserver(() => renderTechnologyStack(currentTechnologies))
+    technologyStackObserver.observe(heroTechStack.querySelector('.techStackViewport'))
+  }
+  if (typeof window.getPublishedSiteContent === 'function') {
+    window.getPublishedSiteContent()
+      .then((content) => renderTechnologyStack(content?.technology_stack?.items || defaultTechnologies))
+      .catch((error) => console.error('Could not load published technology stack:', error))
+  }
 
   if (hero && ticker && hero.nextElementSibling !== ticker) hero.after(ticker)
   if (mobileExperience && valueBand && mobileExperience.nextElementSibling !== valueBand) {
@@ -59,6 +330,7 @@
     prompt.append(copy, link)
     section.after(prompt)
   }
+
   const responsivePreview = document.querySelector('#mobile-experience .responsiveDemo')
   if (responsivePreview) {
     responsivePreview.setAttribute('aria-label', 'Sample dashboard previews in desktop, tablet, and phone layouts')
@@ -123,7 +395,7 @@
   const visibilityStyle = document.createElement('style')
   visibilityStyle.textContent = `
     [hidden]{display:none!important}
-    .brand .mark,.mark{width:40px!important;height:40px!important;flex:0 0 40px!important;background:url('/favicon.svg') center/112% 112% no-repeat!important;border-radius:12px!important;box-shadow:0 5px 14px #3859d533!important;overflow:hidden!important;transform:none!important}
+    .brand .mark,.mark{width:48px!important;height:48px!important;flex:0 0 48px!important;background:url('/brand-flame.png') center/contain no-repeat!important;border-radius:0!important;box-shadow:none!important;filter:none!important;overflow:visible!important;transform:none!important}
     #mobile-experience .responsiveDemo{display:flex!important;align-items:flex-end!important;justify-content:center!important;gap:clamp(7px,1.4vw,14px)!important;width:100%!important;height:clamp(210px,22vw,260px)!important;min-height:210px!important;position:relative!important;overflow:hidden!important;box-sizing:border-box!important;padding:28px 12px 18px!important}
     #mobile-experience .responsiveDemo:before{content:'ALL SCREENS · ONE EXPERIENCE'!important;top:10px!important;font-size:7px!important;letter-spacing:1.1px!important}
     #mobile-experience .responsiveDemo:after{content:none!important}
@@ -562,13 +834,43 @@
     }
   }
 
+  function renderFallbackConcepts(grid) {
+    if (grid.children.length) return
+
+    const concepts = [
+      {
+        id: 'concept-finance-workspace',
+        category: 'ILLUSTRATIVE CONCEPT · SAMPLE DATA',
+        title: 'A clearer finance workspace',
+        description: 'Bring spending, receipts and vendor payments into one considered business dashboard.',
+      },
+      {
+        id: 'concept-operations-dashboard',
+        category: 'ILLUSTRATIVE CONCEPT · SAMPLE DATA',
+        title: 'Operations at a glance',
+        description: 'Explore how bookings, trips and collections could come together in a purpose-built workflow.',
+      },
+      {
+        id: 'concept-trading-tools',
+        category: 'ILLUSTRATIVE CONCEPT · SAMPLE DATA',
+        title: 'A focused trading workspace',
+        description: 'A concept for bringing market context, positions and risk tools into one interface.',
+      },
+    ]
+
+    grid.replaceChildren(...concepts.map(createPortfolioCard))
+  }
+
   async function loadPortfolioProjects() {
     const grid = document.querySelector('.caseGrid')
     if (!grid) return
     const response = await fetch('/api/portfolio')
     if (!response.ok) throw new Error(`Portfolio request failed (${response.status})`)
     const { projects = [] } = await response.json()
-    if (!Array.isArray(projects) || !projects.length) return
+    if (!Array.isArray(projects) || !projects.length) {
+      renderFallbackConcepts(grid)
+      return
+    }
 
     syncPortfolioProjects(grid, projects)
     const observer = new MutationObserver(() => syncPortfolioProjects(grid, projects))
@@ -588,5 +890,9 @@
     .catch((error) => console.error('Could not load website sections:', error))
 
   loadPortfolioProjects()
-    .catch((error) => console.error('Could not load published portfolio projects:', error))
+    .catch((error) => {
+      console.error('Could not load published portfolio projects:', error)
+      const grid = document.querySelector('.caseGrid')
+      if (grid) renderFallbackConcepts(grid)
+    })
 })()

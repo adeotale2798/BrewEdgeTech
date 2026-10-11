@@ -7,6 +7,7 @@
     phone: 'sphone',
     location: 'slocation',
     instagram: 'sinstagram',
+    youtube: 'syoutube',
     linkedin: 'slinkedin',
     banner: 'sbanner',
     banner_url: 'sbannerurl',
@@ -14,6 +15,16 @@
   if (!button || !status) return
   document.getElementById('sname').required = true
   document.getElementById('semail').required = true
+
+  const originalLoadSettings = window.loadSettings
+  if (typeof originalLoadSettings === 'function') {
+    window.loadSettings = async function loadSettingsWithYoutube(...args) {
+      await originalLoadSettings(...args)
+      const { items = [] } = await request('/admin/content', { method: 'GET' })
+      const saved = items.find((item) => item.content_key === 'footer')
+      document.getElementById('syoutube').value = saved?.content?.youtube || ''
+    }
+  }
 
   const style = document.createElement('style')
   style.textContent = `
@@ -87,7 +98,7 @@
       return
     }
 
-    const insecureField = ['sinstagram', 'slinkedin', 'sbannerurl']
+    const insecureField = ['sinstagram', 'syoutube', 'slinkedin', 'sbannerurl']
       .map((id) => document.getElementById(id))
       .find((input) => input.value.trim() && !/^https:\/\//i.test(input.value.trim()))
     if (insecureField) {
