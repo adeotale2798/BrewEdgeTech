@@ -395,7 +395,7 @@
   const visibilityStyle = document.createElement('style')
   visibilityStyle.textContent = `
     [hidden]{display:none!important}
-    .brand .mark,.mark{width:48px!important;height:48px!important;flex:0 0 48px!important;background:url('/brand-flame.png') center/contain no-repeat!important;border-radius:0!important;box-shadow:none!important;filter:none!important;overflow:visible!important;transform:none!important}
+    .brand .mark,.mark{width:48px!important;height:48px!important;flex:0 0 48px!important;background:url('/favicon.svg?v=2') center/contain no-repeat!important;border-radius:0!important;box-shadow:none!important;filter:none!important;overflow:visible!important;transform:none!important}
     #mobile-experience .responsiveDemo{display:flex!important;align-items:flex-end!important;justify-content:center!important;gap:clamp(7px,1.4vw,14px)!important;width:100%!important;height:clamp(210px,22vw,260px)!important;min-height:210px!important;position:relative!important;overflow:hidden!important;box-sizing:border-box!important;padding:28px 12px 18px!important}
     #mobile-experience .responsiveDemo:before{content:'ALL SCREENS · ONE EXPERIENCE'!important;top:10px!important;font-size:7px!important;letter-spacing:1.1px!important}
     #mobile-experience .responsiveDemo:after{content:none!important}
